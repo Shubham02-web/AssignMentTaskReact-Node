@@ -21,11 +21,21 @@ const EmployeePDF = ({ employee }) => (
   <Document>
     <Page style={styles.page}>
       <View style={styles.section}>
-        <Text>Name: {employee.name}</Text>
-        <Text>Email: {employee.email}</Text>
-        <Text>Phone: {employee.phone}</Text>
-        <Text>Position: {employee.position}</Text>
-        <Text>Employee ID: {employee.employeeId}</Text>
+        <br />
+        <Text>{employee.name} : Details :)</Text>
+        <br />
+        <br />
+        <Text>Name = {employee.name}</Text>
+        <br />
+        <Text>Email = {employee.email}</Text>
+        <br />
+        <Text>Phone = {employee.phone}</Text>
+        <br />
+        <Text>Position = {employee.position}</Text>
+        <br />
+        <Text>Employee ID = {employee.employeeOfficeId}</Text>
+        <br />
+        <Text>Employee Image Path = {employee.imageUrl}</Text>
       </View>
     </Page>
   </Document>
@@ -33,22 +43,22 @@ const EmployeePDF = ({ employee }) => (
 
 const EmployeePDFDownload = () => {
   const { id } = useParams();
-  const [employee, setEmployee] = useState(null);
+  const [employee, setEmployee] = useState([]);
 
-  const fetchEmployee = async () => {
+  const fetchEmployee = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/employees/${id}`
+        `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
       );
-      setEmployee(response.data);
+      setEmployee(response.data.employee);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    fetchEmployee();
-  }, [id]);
+    fetchEmployee(id);
+  }, []);
 
   if (!employee) return <div>Loading...</div>;
 

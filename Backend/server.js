@@ -8,6 +8,7 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 app.use("/uploads", express.static("uploads"));

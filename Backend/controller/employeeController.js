@@ -1,6 +1,7 @@
 const Employee = require("../Models/employee");
-const fs = require("fs");
+const rm = require("fs");
 const path = require("path");
+const employee = require("../Models/employee");
 
 // Controllers to handle opertions Creting Employee
 const createEmployee = async function (req, res, next) {
@@ -62,21 +63,53 @@ const getEmployees = async (req, res) => {
   }
 };
 
+const getSingleEmployee = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employee = await Employee.findOne({ _id: id });
+    if (!employee)
+      return res.status(404).json({
+        success: false,
+        message: `Employee Not Found For These ID ${id}`,
+      });
+
+    res.status(200).json({
+      success: true,
+      message: "Emloyee Details :)",
+      employee,
+    });
+  } catch (error) {
+    console.log(`Error in getSingle Employee Details API ${error.message}`);
+    res.status(500).json({
+      success: false,
+      message: `Error  In GetSingleUserDetails API ${error.message}`,
+    });
+  }
+};
 const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id)
       return res.status(400).json({
         success: false,
-        message: `Error in deleteEmployee API`,
+        message: `Error in updateEmployye id not found`,
       });
-    const { name, email, phone, position, employeeOfficeId, image } = req.body;
-    if (req.file) {
-      const imageUrl = `/uploads/${req.body.employeeOfficeId}/${req.file.originalname}`;
-      // Image.imageUrl = imageUrl;
-    }
     const UpdatedEmployee = await Employee.findById(id);
     if (!UpdatedEmployee) console.log("no employee find for these id");
+    const { name, email, phone, position, employeeOfficeId } = req.body;
+    if (name || email || phone || position || employeeOfficeId) {
+      return res.status(400).json({
+        success: false,
+        message: "Please Enter Atleast One Field to Update Employee",
+      });
+    }
+    // if (image) {
+    //   rm(UpdatedEmployee.imageUrl, () => {
+    //     console.log("old photo deleted");
+    //   });
+    //   UpdatedEmployee.imageUrl = `/uploads/${UpdatedEmployee.employeeOfficeId}/${req.file.originalname}`;
+    //   // Image.imageUrl = imageUrl;
+    // }
     if (name) UpdatedEmployee.name = name;
     if (email) UpdatedEmployee.email = email;
     if (phone) UpdatedEmployee.phone = phone;
@@ -99,21 +132,22 @@ const updateEmployee = async (req, res) => {
 const deleteEmployee = async (req, res) => {
   try {
     const { id } = req.params;
+    const delEmployee = await Employee.findById(id);
     if (!id)
       return res.status(400).json({
         success: false,
-        message: `Error in deleteEmployee API`,
+        message: `Employee Not Found for these ID`,
       });
-    const delEmployee = await Employee.findByIdAndDelete(id);
-    console.log(__dirname);
-    // Delete the associated image file if it exists
-    if (delEmployee.image) {
-      fs.unlink(path.join(__dirname, "..", delEmployee.imageUrl), (err) => {
-        if (err) {
-          console.error(`Failed to delete image file: ${err.message}`);
-        }
+
+    // removing image
+    if (delEmployee.imageUrl) {
+      rm.rm(delEmployee.imageUrl, () => {
+        console.log("image deleted successfully");
       });
     }
+
+    // Delting Employee
+    await Employee.deleteOne({ _id: id });
     res.status(200).json({
       success: true,
       message: "Employee deleted Successfully",
@@ -132,4 +166,5 @@ module.exports = {
   getEmployees,
   updateEmployee,
   deleteEmployee,
+  getSingleEmployee,
 };

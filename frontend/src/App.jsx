@@ -3,6 +3,8 @@ import EmployeeForm from "./components/EmployeeForm";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeDetails from "./components/EmployeeDetails";
 import EmployeePDF from "./components/EmployeePDF";
+import EmployeeDelete from "./components/EmployeeDelete";
+import UpdateEmployee from "./components/EmployeeUpdate";
 
 const App = () => {
   return (
@@ -22,8 +24,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<EmployeeList />} />
           <Route path="/add" element={<EmployeeForm />} />
-          <Route path="/employee/:id" element={<EmployeeDetails />} />
-          <Route path="/employee/:id/pdf" element={<EmployeePDF />} />
+          <Route path="/employeeDetails/:id" element={<EmployeeDetails />} />
+          <Route path="/employeePDF/:id/pdf" element={<EmployeePDF />} />
+          <Route path="/employeeDelete/:id" element={<EmployeeDelete />} />
+          <Route path="employeeUpdate/:id" element={<UpdateEmployee />} />
         </Routes>
       </div>
     </Router>

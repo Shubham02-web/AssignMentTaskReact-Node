@@ -4,24 +4,25 @@ import axios from "axios";
 
 const EmployeeDetails = () => {
   const { id } = useParams();
-  const [employee, setEmployee] = useState(null);
+  const [employee, setEmployee] = useState([]);
 
   const fetchEmployee = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/employees/${id}`
+        `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
       );
-      setEmployee(response.data);
+      setEmployee(response.data.employee);
+      if (employee) alert(response.data.message);
     } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    fetchEmployee();
-  }, [id]);
+    fetchEmployee(id);
+  }, []);
 
-  if (!employee) return <div>Loading...</div>;
+  if (!employee) return <div>Loading Employee Details...</div>;
 
   return (
     <div>
@@ -29,8 +30,8 @@ const EmployeeDetails = () => {
       <p>Email: {employee.email}</p>
       <p>Phone: {employee.phone}</p>
       <p>Position: {employee.position}</p>
-      <p>Employee ID: {employee.employeeId}</p>
-      <img src={employee.image} alt={employee.name} />
+      <p>Employee ID: {employee.employeeOfficeId}</p>
+      <img src={employee.imageUrl} alt={employee.name} />
     </div>
   );
 };

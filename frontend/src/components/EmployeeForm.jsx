@@ -33,10 +33,15 @@ const EmployeeForm = ({ fetchEmployees }) => {
     });
 
     try {
-      await axios.post("http://localhost:5000/api/employees/create", data);
+      const userCreate = await axios.post(
+        "http://localhost:8000/api/v1/employees/create",
+        data
+      );
       // Fetch updated list of employees after successful submission
+      alert(userCreate.data.message);
       fetchEmployees();
     } catch (err) {
+      alert(err.message);
       console.error(err);
     }
   };
@@ -74,7 +79,7 @@ const EmployeeForm = ({ fetchEmployees }) => {
       <input type="file" name="image" onChange={handleChange} required />
       <input
         type="text"
-        name="employeeId"
+        name="employeeOfficeId"
         placeholder="Employee ID"
         onChange={handleChange}
         required

@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 const EmployeeList = () => {
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/employees");
-      setEmployees(response.data);
+      const response = await axios.get(
+        "http://localhost:8000/api/v1/employees/allemployee"
+      );
+      setEmployees(response.data.employees);
     } catch (err) {
       console.error(err);
     }
@@ -22,8 +24,10 @@ const EmployeeList = () => {
       {employees.map((employee) => (
         <div key={employee._id}>
           <p>{employee.name}</p>
-          <link to={`/employee/${employee._id}`}>View Details</link>
-          <link to={`/employee/${employee._id}/pdf`}>Download PDF</link>
+          <Link to={`/employeeDetails/${employee._id}`}>View Details</Link>
+          <Link to={`/employeePDF/${employee._id}/pdf`}>Download PDF</Link>
+          <Link to={`/employeeDelete/${employee._id}`}>Delete Employee</Link>
+          <Link to={`"employeeUpdate/${employee._id}`}>Update Employee</Link>
         </div>
       ))}
     </div>
