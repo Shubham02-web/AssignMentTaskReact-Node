@@ -48,45 +48,114 @@ const EmployeeForm = ({ fetchEmployees }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        placeholder="Name"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="phone"
-        placeholder="Phone"
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="position"
-        placeholder="Position"
-        onChange={handleChange}
-        required
-      />
-      <input type="file" name="image" onChange={handleChange} required />
-      <input
-        type="text"
-        name="employeeOfficeId"
-        placeholder="Employee ID"
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Add Employee</button>
-    </form>
+    <div>
+      <div className="container vw-100 m-2 p-2">
+        <form
+          onSubmit={handleSubmit}
+          className="d-block w-50 mx-auto justify-content-center"
+          style={{ backgroundColor: "#e0f9fa" }}
+        >
+          <div className="row m-0 p-2 justify-content-center h5 bg-success text-center color-white">
+            <label className="col-sm-12 text-white   col-form-label">
+              Employee Register Form
+            </label>
+          </div>
+
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">Name</label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="name"
+                className="form-control text-center"
+                placeholder="name"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">Email</label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="email"
+                name="email"
+                className="form-control text-center"
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Mobile Number
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="phone"
+                className="form-control text-center"
+                placeholder="Phone"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Work Profile
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="position"
+                className="form-control text-center"
+                placeholder="Position"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Upload Image
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="file"
+                name="imageUrl"
+                className="form-control text-center"
+                placeholder="Select Image"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className="row m-2 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Employe ID
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="employeeOfficeId"
+                className="form-control text-center"
+                placeholder="Employee ID"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="btn m-0 p-2 text-center text-white  col-sm-12 bg-success"
+          >
+            <h5>Register Employee</h5>
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
