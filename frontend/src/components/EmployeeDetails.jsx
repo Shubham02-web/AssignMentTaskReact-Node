@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import "../index.css";
 const EmployeeDetails = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState([]);

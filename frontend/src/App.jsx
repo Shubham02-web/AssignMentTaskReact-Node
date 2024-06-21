@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import EmployeeForm from "./components/EmployeeForm";
 import EmployeeList from "./components/EmployeeList";
 import EmployeeDetails from "./components/EmployeeDetails";
@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Employee Management System</h1>
+        {/* <h1>Employee Management System</h1>
         <nav>
           <ul>
             <li>
@@ -20,7 +20,7 @@ const App = () => {
               <Link to="/add">Add Employee</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
         <Routes>
           <Route path="/" element={<EmployeeList />} />
           <Route path="/add" element={<EmployeeForm />} />
