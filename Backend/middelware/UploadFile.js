@@ -1,32 +1,28 @@
+const express = require("express");
 const multer = require("multer");
+const fs = require("fs");
 const path = require("path");
 
-// Define storage for the images
+const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads"); // directory to store the uploaded images
+    const { employeeOfficeId } = req.body;
+    const dir = `./uploads/${employeeOfficeId}`;
+    console.log(dir);
+    // Create the directory if it doesn't exist
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+
+    cb(null, dir);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    cb(null, file.originalname); // Append extension
   },
 });
 
-// Define file filter to allow only images
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (!allowedTypes.includes(file.mimetype)) {
-    const error = new Error("Incorrect file type");
-    error.status = 400;
-    return cb(error, false);
-  }
-  cb(null, true);
-};
+const upload = multer({ storage: storage });
 
-// Initialize multer with the defined storage and file filter
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: { fileSize: 1024 * 1024 * 5 }, // limit file size to 5MB
-});
-
-module.exports = upload;
+// Middleware function to handle file upload
+const uploadMiddleware = upload.single("image");
+module.exports = uploadMiddleware;

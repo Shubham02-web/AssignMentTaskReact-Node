@@ -28,6 +28,17 @@ const EmployeeList = () => {
   return (
     <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
       <h2 className="text-center mb-4">Employees List</h2>
+      <div
+        style={{ marginLeft: "190px" }}
+        className="w-75  mb-2 d-flex justify-content-end"
+      >
+        <Button
+          className="btn btn-light btn-sm mr-2"
+          onClick={() => navigate(`/add`)}
+        >
+          Add employee
+        </Button>
+      </div>
       <div className="container bg-light text-dark p-5 rounded shadow-lg">
         {employees.map((employee) => (
           <div

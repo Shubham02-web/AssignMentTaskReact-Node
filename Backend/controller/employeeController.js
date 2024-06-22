@@ -1,5 +1,5 @@
 const Employee = require("../Models/employee");
-const rm = require("fs");
+const fs = require("fs");
 const path = require("path");
 const employee = require("../Models/employee");
 
@@ -8,8 +8,6 @@ const createEmployee = async function (req, res, next) {
   try {
     // accessing all necessary fields
     const { name, email, phone, position, employeeOfficeId } = req.body;
-    // setup for image
-    const image = req.file ? req.file.path : null;
     //   Creating Condition to verify fields show error message if any of field is missing
 
     if (!name || !email || !phone || !position || !employeeOfficeId)
@@ -18,7 +16,11 @@ const createEmployee = async function (req, res, next) {
         message:
           "Please Enter All Fields name email phone position employeeOfficeId",
       });
-    const imageUrl = `uploads/${employeeOfficeId}/${req.file.originalname}`;
+
+    const imageUrl = req.file
+      ? `uploads/${employeeOfficeId}/${req.file.originalname}`
+      : null;
+
     const newEmployee = await Employee.create({
       name,
       email,
@@ -89,37 +91,19 @@ const getSingleEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!id)
-      return res.status(400).json({
-        success: false,
-        message: `Error in updateEmployye id not found`,
-      });
-    const UpdatedEmployee = await Employee.findById(id);
-    if (!UpdatedEmployee) console.log("no employee find for these id");
     const { name, email, phone, position, employeeOfficeId } = req.body;
-    if (name || email || phone || position || employeeOfficeId) {
-      return res.status(400).json({
-        success: false,
-        message: "Please Enter Atleast One Field to Update Employee",
-      });
-    }
-    // if (image) {
-    //   rm(UpdatedEmployee.imageUrl, () => {
-    //     console.log("old photo deleted");
-    //   });
-    //   UpdatedEmployee.imageUrl = `/uploads/${UpdatedEmployee.employeeOfficeId}/${req.file.originalname}`;
-    //   // Image.imageUrl = imageUrl;
-    // }
-    if (name) UpdatedEmployee.name = name;
-    if (email) UpdatedEmployee.email = email;
-    if (phone) UpdatedEmployee.phone = phone;
-    if (position) UpdatedEmployee.position = position;
-    if (employeeOfficeId) UpdatedEmployee.employeeOfficeId = employeeOfficeId;
-    await UpdatedEmployee.save();
-    await res.status(200).json({
+    const updatedEmployee = await Employee.findById(id);
+    if (!updatedEmployee) console.log("no employee find for these id");
+    if (name) updatedEmployee.name = name;
+    if (email) updatedEmployee.email = email;
+    if (phone) updatedEmployee.phone = phone;
+    if (position) updatedEmployee.position = position;
+    if (employeeOfficeId) updatedEmployee.employeeOfficeId = employeeOfficeId;
+    await updatedEmployee.save();
+    res.status(200).json({
       success: true,
       message: `Employee Updates Successfully`,
-      UpdatedEmployee,
+      updatedEmployee,
     });
   } catch (err) {
     res.status(500).json({
@@ -140,12 +124,48 @@ const deleteEmployee = async (req, res) => {
       });
 
     // removing image
-    if (delEmployee.imageUrl) {
-      rm.rm(delEmployee.imageUrl, () => {
-        console.log("image deleted successfully");
-      });
-    }
+    const filename = delEmployee.imageUrl.split("/").pop();
+    const dir = path.join(
+      __dirname,
+      "..",
+      "uploads",
+      delEmployee.employeeOfficeId
+    );
+    console.log(dir);
+    const filePath = path.join(dir, filename);
+    console.log(filePath);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        if (err.code === "ENOENT") {
+          // File does not exist
+          return res.status(404).send("File not found.");
+        }
+        // Other errors
+        return res.status(500).send("Error deleting file.");
+      }
 
+      // Check if the directory is now empty
+      fs.readdir(dir, (err, files) => {
+        if (err) {
+          return res.status(500).send("Error reading directory.");
+        }
+
+        if (files.length === 0) {
+          // Delete the directory if it is empty
+          fs.rmdir(dir, (err) => {
+            if (err) {
+              return res.status(500).send("Error deleting directory.");
+            } // Proceed to the next middleware or route handler
+          });
+        } else {
+          res.status(500).json({
+            success: false,
+            message: "Error In Delete Image Function",
+          });
+          // Proceed to the next middleware or route handler
+        }
+      });
+    });
     // Delting Employee
     await Employee.deleteOne({ _id: id });
     res.status(200).json({
