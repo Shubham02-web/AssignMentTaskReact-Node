@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 // eslint-disable-next-line no-unused-vars
@@ -58,7 +58,6 @@ const UpdateEmployee = ({ fetchEmployees }) => {
       if (formData[key]) data.append(key, formData[key]);
     });
     const CheckId = formData.id;
-    console.log(CheckId);
     try {
       await axios.put(
         `http://localhost:8000/api/v1/employees/update/${CheckId}`,
@@ -74,124 +73,128 @@ const UpdateEmployee = ({ fetchEmployees }) => {
   return (
     <div>
       <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
-        <div className="container vw-100 m-0 p-0 bg-white text-dark">
-          <form
-            onSubmit={handleSubmit}
-            className="d-block w-50 mx-auto justify-content-center  bg-light text-dark p-1 rounded shadow-lg"
-          >
-            <div className="row m-0 p-0 justify-content-center h3 b text-center color-white">
-              <label className="col-sm-12 text-dark   col-form-label">
-                Update Employee Details
-              </label>
+        <form
+          style={{ width: "40%" }}
+          onSubmit={handleSubmit}
+          className="d-block  mx-auto justify-content-center  bg-light text-dark p-1 rounded shadow-lg"
+        >
+          <div className="row m-0 p-0 justify-content-center h3 b text-center color-white">
+            <label className="col-sm-12 text-dark   col-form-label">
+              Update Employee Details
+            </label>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">Name</label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="name"
+                className="form-control text-center"
+                placeholder="Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">Name</label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="text"
-                  name="name"
-                  className="form-control text-center"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">Email</label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="email"
+                name="email"
+                className="form-control text-center"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">Email</label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="email"
-                  name="email"
-                  className="form-control text-center"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Mobile Number
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="phone"
+                className="form-control text-center"
+                placeholder="Phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">
-                Mobile Number
-              </label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="text"
-                  name="phone"
-                  className="form-control text-center"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Work Profile
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="position"
+                className="form-control text-center"
+                placeholder="Position"
+                value={formData.position}
+                onChange={handleChange}
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">
-                Work Profile
-              </label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="text"
-                  name="position"
-                  className="form-control text-center"
-                  placeholder="Position"
-                  value={formData.position}
-                  onChange={handleChange}
-                />
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Upload Image
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="file"
+                name="imageUrl"
+                className="form-control text-center"
+                placeholder="Select Image"
+                onChange={handleChange}
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">
-                Upload Image
-              </label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="file"
-                  name="imageUrl"
-                  className="form-control text-center"
-                  placeholder="Select Image"
-                  onChange={handleChange}
-                />
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Current Image
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                value={formData.imageUrl}
+                className="form-control text-center"
+                disabled
+                readOnly
+              ></input>
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">
-                Current Image
-              </label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="text"
-                  value={formData.imageUrl}
-                  className="form-control text-center"
-                  disabled
-                  readOnly
-                ></input>
-              </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-3 p-0">
+              Employe ID
+            </label>
+            <div className="col-sm-6 m-3 p-0">
+              <input
+                type="text"
+                name="employeeOfficeId"
+                className="form-control text-center"
+                placeholder="Employee ID"
+                value={formData.employeeOfficeId}
+                onChange={handleChange}
+              />
             </div>
-            <div className="row m-1 justify-content-center">
-              <label className="col-sm-1 col-form-label m-3 p-0">
-                Employe ID
-              </label>
-              <div className="col-sm-6 m-3 p-0">
-                <input
-                  type="text"
-                  name="employeeOfficeId"
-                  className="form-control text-center"
-                  placeholder="Employee ID"
-                  value={formData.employeeOfficeId}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
+          </div>
+          <div className="row m-1 text-center justify-content-center">
             <button
               type="submit"
               className="btn m-0 p-2 text-center text-white  col-sm-12 bg-success"
             >
-              <h5>Update Employee</h5>
+              Update Employee
             </button>
-          </form>
-        </div>
+            <NavLink to={"/"} className="text-decoration-underline">
+              Back to Home
+            </NavLink>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -2,9 +2,9 @@
 import { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-const EmployeeForm = ({ fetchEmployees }) => {
+const EmployeeForm = () => {
   const navigate = useNavigate();
 
   // State to manage form data
@@ -36,13 +36,9 @@ const EmployeeForm = ({ fetchEmployees }) => {
       data.append(key, formData[key]);
     });
     try {
-      const userCreate = await axios.post(
-        "http://localhost:8000/api/v1/employees/create",
-        data
-      );
+      await axios.post("http://localhost:8000/api/v1/employees/create", data);
       // Fetch updated list of employees after successful submission
-      alert(userCreate.data.message);
-      fetchEmployees();
+      // awafetchEmployees();
       navigate("/");
     } catch (err) {
       alert(err.message);
@@ -153,13 +149,16 @@ const EmployeeForm = ({ fetchEmployees }) => {
           </div>
         </div>
 
-        <div className="row m-2 justify-content-center">
+        <div className="row gap-2 align-items-center text-center m-2 justify-content-center">
           <button
             type="submit"
             className="btn m-0 p-2  text-center text-white bg-success rounded-pill"
           >
             Register Employee
           </button>
+          <NavLink to={"/"} className="text-decoration-underline">
+            Back to Home
+          </NavLink>
         </div>
       </form>
     </div>

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
 import "../index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 const EmployeeDetails = () => {
-  // eslint-disable-next-line no-unused-vars
-  const navigate = useNavigate();
   const { id } = useParams();
   const [employee, setEmployee] = useState([]);
 
@@ -15,7 +13,6 @@ const EmployeeDetails = () => {
         `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
       );
       setEmployee(response.data.employee);
-      if (employee) alert(response.data.message);
     } catch (err) {
       console.error(err);
     }
@@ -30,6 +27,9 @@ const EmployeeDetails = () => {
   return (
     <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
       <div className="container bg-light text-dark p-5 rounded shadow-lg">
+        <NavLink to={"/"} className="text-decoration-underline">
+          Back to Home
+        </NavLink>
         <table className="table table-bordered border-primary table-hover">
           <thead className="thead-dark">
             <tr>

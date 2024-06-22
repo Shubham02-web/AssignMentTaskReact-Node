@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "rsuite";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { EmployeePDF } from "./EmployeePDF";
 
 // const { Column, HeaderCell, Cell } = Table;
 
@@ -36,7 +38,7 @@ const EmployeeList = () => {
           className="btn btn-light btn-sm mr-2"
           onClick={() => navigate(`/add`)}
         >
-          Add employee
+          + Add employee
         </Button>
       </div>
       <div className="container bg-light text-dark p-5 rounded shadow-lg">
@@ -67,12 +69,15 @@ const EmployeeList = () => {
               >
                 Delete Employee
               </Button>
-              <Button
-                className="btn btn-secondary btn-sm"
-                onClick={() => navigate(`/employeePDF/${employee._id}/pdf`)}
+              <PDFDownloadLink
+                className="btn btn-sm btn-success"
+                document={<EmployeePDF employee={employee} />}
+                fileName={`${employee.name}.pdf`}
               >
-                Employee PDF
-              </Button>
+                {({ _, url, loading, error }) =>
+                  loading ? "Loading document..." : "Download PDF"
+                }
+              </PDFDownloadLink>
             </div>
           </div>
         ))}
