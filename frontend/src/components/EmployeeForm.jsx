@@ -48,15 +48,14 @@ const EmployeeForm = ({ fetchEmployees }) => {
   };
 
   return (
-    <div>
-      <div className="container vw-100 m-2 p-2">
+    <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
+      <div className="container vw-100 m-2 p-2 bg-white text-dark">
         <form
           onSubmit={handleSubmit}
-          className="d-block w-50 mx-auto justify-content-center"
-          style={{ backgroundColor: "#e0f9fa" }}
+          className="d-block w-50 mx-auto justify-content-center  bg-light text-dark p-1 rounded shadow-lg"
         >
-          <div className="row m-0 p-2 justify-content-center h5 bg-success text-center color-white">
-            <label className="col-sm-12 text-white   col-form-label">
+          <div className="row m-0 p-2 justify-content-center h3 b text-center color-white">
+            <label className="col-sm-12 text-dark   col-form-label">
               Employee Register Form
             </label>
           </div>
@@ -124,7 +123,7 @@ const EmployeeForm = ({ fetchEmployees }) => {
             <div className="col-sm-6 m-3 p-0">
               <input
                 type="file"
-                name="imageUrl"
+                name="image"
                 className="form-control text-center"
                 placeholder="Select Image"
                 onChange={handleChange}
@@ -149,7 +148,7 @@ const EmployeeForm = ({ fetchEmployees }) => {
           </div>
           <button
             type="submit"
-            className="btn m-0 p-2 text-center text-white  col-sm-12 bg-success"
+            className="btn m-0 p-2  text-center text-white  col-sm-12 bg-success rounded-pill"
           >
             <h5>Register Employee</h5>
           </button>

@@ -27,8 +27,12 @@ const EmployeeDelete = () => {
   // if (employee) return <div>Loading Employee...</div>;
 
   return (
-    <div>
-      <h1>Check Alert Box for response</h1>
+    <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
+      <div className="container bg-light text-dark p-5 rounded shadow-lg">
+        <div className="btn btn-lg d-flex align-items-center justify-content-center">
+          Check alert Box For Conformation Of Employee data delete ??
+        </div>
+      </div>
     </div>
   );
 };

@@ -11,6 +11,78 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.employee-list {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.employee-name {
+  font-weight: bold;
+  margin-right: 15px;
+}
+
+.button-group .btn {
+  margin-right: 10px;
+}
+
+.button-group .btn:last-child {
+  margin-right: 0;
+}
+
+.container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  background-color: #ffffff;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.table img {
+  display: block;
+  margin: 0 auto;
+  max-height: 200px;
+  border-radius: 5px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* background-color: #007bff; */
+}
+
+.container-fluid {
+  background: linear-gradient(135deg, #007bff, #00d4ff);
+}
+
+.table thead th {
+  background-color: #343a40;
+  /* Dark header */
+  color: white;
+}
+
+.table img {
+  display: block;
+  margin: 0 auto;
+  max-height: 200px;
+  border-radius: 5px;
+}
+
+.btn-success {
+  padding: 10px 30px;
+  font-size: 1.25rem;
+  border-radius: 5px;
+}
+
 .bg-secondary {
   --bs-bg-opacity: 0.7;
   background-color: rgba(

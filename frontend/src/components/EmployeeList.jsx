@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Button } from "rsuite";
+
+// const { Column, HeaderCell, Cell } = Table;
+
 const EmployeeList = () => {
+  const navigate = useNavigate();
   const [employees, setEmployees] = useState([]);
 
   const fetchEmployees = async () => {
@@ -21,21 +26,46 @@ const EmployeeList = () => {
   }, []);
 
   return (
-    <div className="container mt-5">
-      {employees.map((employee) => (
-        <div key={employee._id}>
-          <p>{employee.name}</p>
-          <Link to={`/employeeDetails/${employee._id}`}>View Details</Link>
-          <Link to={`/employeePDF/${employee._id}/pdf`}>Download PDF</Link>
-          <Link to={`/employeeDelete/${employee._id}`}>Delete Employee</Link>
-          <Link
-            fetchEmployees={fetchEmployees}
-            to={`/employeeUpdate/${employee._id}`}
+    <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
+      <h2 className="text-center mb-4">Employees List</h2>
+      <div className="container bg-light text-dark p-5 rounded shadow-lg">
+        {employees.map((employee) => (
+          <div
+            key={employee._id}
+            className="d-flex justify-content-between align-items-center mb-3 p-2 border-bottom"
           >
-            Update Employee
-          </Link>
-        </div>
-      ))}
+            <span className="employee-name font-weight-bold mr-3">
+              {employee.name}
+            </span>
+            <div className="button-group d-flex">
+              <Button
+                className="btn btn-info btn-sm mr-2"
+                onClick={() => navigate(`/employeeDetails/${employee._id}`)}
+              >
+                Check Details
+              </Button>
+              <Button
+                className="btn btn-primary btn-sm mr-2"
+                onClick={() => navigate(`/employeeUpdate/${employee._id}`)}
+              >
+                Update Details
+              </Button>
+              <Button
+                className="btn btn-danger btn-sm mr-2"
+                onClick={() => navigate(`/employeeDelete/${employee._id}`)}
+              >
+                Delete Employee
+              </Button>
+              <Button
+                className="btn btn-secondary btn-sm"
+                onClick={() => navigate(`/employeePDF/${employee._id}/pdf`)}
+              >
+                Employee PDF
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

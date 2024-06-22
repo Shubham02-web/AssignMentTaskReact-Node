@@ -63,14 +63,19 @@ const EmployeePDFDownload = () => {
   if (!employee) return <div>Loading...</div>;
 
   return (
-    <PDFDownloadLink
-      document={<EmployeePDF employee={employee} />}
-      fileName={`${employee.name}.pdf`}
-    >
-      {({ blob, url, loading, error }) =>
-        loading ? "Loading document..." : "Download PDF"
-      }
-    </PDFDownloadLink>
+    <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
+      <div className="container bg-light text-dark p-5 rounded shadow-lg">
+        <PDFDownloadLink
+          className="btn btn-lg d-flex align-items-center justify-content-center btn-success"
+          document={<EmployeePDF employee={employee} />}
+          fileName={`${employee.name}.pdf`}
+        >
+          {({ blob, url, loading, error }) =>
+            loading ? "Loading document..." : "Download PDF"
+          }
+        </PDFDownloadLink>
+      </div>
+    </div>
   );
 };
 
