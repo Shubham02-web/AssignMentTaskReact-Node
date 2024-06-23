@@ -36,12 +36,19 @@ const EmployeeForm = () => {
       data.append(key, formData[key]);
     });
     try {
-      await axios.post("http://localhost:8000/api/v1/employees/create", data);
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/employees/create",
+        data
+      );
       // Fetch updated list of employees after successful submission
-      // awafetchEmployees();
+      // fetchEmployees();
+      alert(response.data.message);
       navigate("/");
     } catch (err) {
-      alert(err.message);
+      if (err.name === "AxiosError") {
+        return alert(err.response.data.message);
+      }
+      // alert(err.message);
       console.error(err);
     }
   };
@@ -81,7 +88,7 @@ const EmployeeForm = () => {
             <input
               type="text"
               name="name"
-              className="form-control "
+              className="form-control"
               placeholder="name"
               onChange={handleChange}
               required
@@ -109,7 +116,7 @@ const EmployeeForm = () => {
           </label>
           <div className="col-sm-6 m-3 p-0">
             <input
-              type="text"
+              type="number"
               name="phone"
               className="form-control"
               placeholder="Phone"

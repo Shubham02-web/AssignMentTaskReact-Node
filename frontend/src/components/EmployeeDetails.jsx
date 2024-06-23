@@ -67,7 +67,7 @@ const EmployeeDetails = () => {
               <td>
                 <img
                   src={employee.imageUrl}
-                  alt={employee.name}
+                  alt={employee.imageUrl}
                   className="img-fluid rounded"
                   style={{ maxHeight: "200px" }}
                 />

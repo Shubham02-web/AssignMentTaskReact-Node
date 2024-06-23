@@ -9,11 +9,12 @@ const EmployeeSchema = new Schema(
     },
     email: {
       type: String,
-      required: true,
       unique: true,
+      required: true,
     },
     phone: {
-      type: String,
+      type: Number,
+      unique: true,
       required: true,
     },
     position: {

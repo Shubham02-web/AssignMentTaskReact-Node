@@ -59,10 +59,11 @@ const UpdateEmployee = ({ fetchEmployees }) => {
     });
     const CheckId = formData.id;
     try {
-      await axios.put(
+      const response = await axios.put(
         `http://localhost:8000/api/v1/employees/update/${CheckId}`,
         data
       );
+      alert(response.data.message);
       UpdateEmployee();
       navigate("/"); // Redirect to home page or employee list
     } catch (err) {
@@ -116,7 +117,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </label>
             <div className="col-sm-6 m-3 p-0">
               <input
-                type="text"
+                type="number"
                 name="phone"
                 className="form-control text-center"
                 placeholder="Phone"
@@ -147,7 +148,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             <div className="col-sm-6 m-3 p-0">
               <input
                 type="file"
-                name="imageUrl"
+                name="image"
                 className="form-control text-center"
                 placeholder="Select Image"
                 onChange={handleChange}

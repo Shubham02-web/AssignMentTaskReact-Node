@@ -17,6 +17,12 @@ const createEmployee = async function (req, res, next) {
           "Please Enter All Fields name email phone position employeeOfficeId",
       });
 
+    if (phone.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: `Please enter a valid mobile number of 10 digits that is ${phone.length} digit `,
+      });
+    }
     const imageUrl = req.file
       ? `uploads/${employeeOfficeId}/${req.file.originalname}`
       : null;
@@ -36,6 +42,14 @@ const createEmployee = async function (req, res, next) {
       newEmployee,
     });
   } catch (err) {
+    if (err.code && err.code === 11000) {
+      const field = Object.keys(err.keyPattern)[0];
+      return res.status(400).json({
+        success: false,
+        error: "Validation Error",
+        message: `${field} allready exists please enter a unique ${field}`,
+      });
+    }
     res.status(500).json({
       success: false,
       message: `Error in CreateEmployee API ${err.message}`,
@@ -93,17 +107,42 @@ const updateEmployee = async (req, res) => {
     const { id } = req.params;
     const { name, email, phone, position, employeeOfficeId } = req.body;
     const updatedEmployee = await Employee.findById(id);
-    if (!updatedEmployee) console.log("no employee find for these id");
+    if (!updatedEmployee)
+      res.json({ message: "no employee find for these id" });
     if (name) updatedEmployee.name = name;
     if (email) updatedEmployee.email = email;
     if (phone) updatedEmployee.phone = phone;
     if (position) updatedEmployee.position = position;
     if (employeeOfficeId) updatedEmployee.employeeOfficeId = employeeOfficeId;
+    if (req.file) {
+      //  removing image
+      const filename = updatedEmployee.imageUrl.split("/").pop();
+      const dir = path.join(
+        __dirname,
+        "..",
+        "uploads",
+        updatedEmployee.employeeOfficeId
+      );
+      console.log(dir);
+      const filePath = path.join(dir, filename);
+      console.log(filePath);
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          if (err.code === "ENOENT") {
+            // File does not exist
+            return res.status(404).send("File not found.");
+          }
+          //       // Other errors
+          return res.status(500).send("Error deleting file.");
+        }
+      });
+      updatedEmployee.imageUrl = `uploads/${employeeOfficeId}/${req.file.originalname}`;
+    }
     await updatedEmployee.save();
     res.status(200).json({
       success: true,
-      message: `Employee Updates Successfully`,
       updatedEmployee,
+      message: `Employee Updates Successfully`,
     });
   } catch (err) {
     res.status(500).json({
@@ -131,9 +170,9 @@ const deleteEmployee = async (req, res) => {
       "uploads",
       delEmployee.employeeOfficeId
     );
-    console.log(dir);
+    // console.log(dir);
     const filePath = path.join(dir, filename);
-    console.log(filePath);
+    // console.log(filePath);
     fs.unlink(filePath, (err) => {
       if (err) {
         if (err.code === "ENOENT") {

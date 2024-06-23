@@ -9,17 +9,6 @@ const App = () => {
   return (
     <Router>
       <div>
-        {/* <h1>Employee Management System</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/add">Add Employee</Link>
-            </li>
-          </ul>
-        </nav> */}
         <Routes>
           <Route path="/" element={<EmployeeList />} />
           <Route path="/add" element={<EmployeeForm />} />
