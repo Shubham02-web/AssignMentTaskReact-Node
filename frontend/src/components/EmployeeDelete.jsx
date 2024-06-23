@@ -16,7 +16,7 @@ const EmployeeDelete = () => {
       navigate("/");
       alert(response.data.message);
     } catch (err) {
-      alert(err.response.data.message);
+      // alert(err.response.data.message);
       console.error(err);
     }
   };

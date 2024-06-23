@@ -48,7 +48,7 @@ const EmployeeForm = () => {
       if (err.name === "AxiosError") {
         return alert(err.response.data.message);
       }
-      // alert(err.message);
+      alert(err.message);
       console.error(err);
     }
   };
