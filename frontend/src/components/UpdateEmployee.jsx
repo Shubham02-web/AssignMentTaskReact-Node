@@ -91,8 +91,24 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </label>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">Name</label>
-            <div className="col-sm-6 m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0">
+              Employe ID
+            </label>
+            <div className="col-sm-6 m-2 p-0">
+              <input
+                type="text"
+                name="employeeOfficeId"
+                className="form-control text-center"
+                placeholder="Employee ID"
+                value={formData.employeeOfficeId}
+                onChange={handleChange}
+                readOnly
+              />
+            </div>
+          </div>
+          <div className="row m-1 justify-content-center">
+            <label className="col-sm-1 col-form-label m-2 p-0">Name</label>
+            <div className="col-sm-6 m-2 p-0">
               <input
                 type="text"
                 name="name"
@@ -105,8 +121,8 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </div>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">Email</label>
-            <div className="col-sm-6 m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0">Email</label>
+            <div className="col-sm-6 m-2 p-0">
               <input
                 type="email"
                 name="email"
@@ -118,10 +134,10 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </div>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0 pr-2">
               Mobile Number
             </label>
-            <div className="col-sm-6 m-3 p-0">
+            <div className="col-sm-6 m-2 p-0">
               <input
                 type="number"
                 name="phone"
@@ -133,10 +149,10 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </div>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0">
               Work Profile
             </label>
-            <div className="col-sm-6 m-3 p-0">
+            <div className="col-sm-6 m-2 p-0">
               <input
                 type="text"
                 name="position"
@@ -148,10 +164,10 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </div>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0">
               Upload Image
             </label>
-            <div className="col-sm-6 m-3 p-0">
+            <div className="col-sm-6 m-2 p-0">
               <input
                 type="file"
                 name="image"
@@ -162,35 +178,23 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </div>
           </div>
           <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">
+            <label className="col-sm-1 col-form-label m-2 p-0">
               Current Image
             </label>
-            <div className="col-sm-6 m-3 p-0">
-              <input
-                type="text"
-                value={formData.imageUrl}
-                className="form-control text-center"
-                disabled
-                readOnly
-              ></input>
-            </div>
-          </div>
-          <div className="row m-1 justify-content-center">
-            <label className="col-sm-1 col-form-label m-3 p-0">
-              Employe ID
-            </label>
-            <div className="col-sm-6 m-3 p-0">
-              <input
-                type="text"
-                name="employeeOfficeId"
-                className="form-control text-center"
-                placeholder="Employee ID"
-                value={formData.employeeOfficeId}
-                onChange={handleChange}
-                readOnly
+            <div className="col-sm-6 m-2 p-0">
+              <img
+                src={`http://localhost:8000/${formData.imageUrl}`}
+                alt={formData.imageUrl}
+                className="img-fluid rounded"
+                style={{
+                  maxHeight: "80px",
+                  padding: "0",
+                  marginLeft: "70px",
+                }}
               />
             </div>
           </div>
+
           <div className="row m-1 text-center justify-content-center">
             <button
               type="submit"

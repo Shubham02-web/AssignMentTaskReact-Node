@@ -65,10 +65,10 @@ const EmployeeDetails = () => {
               <th>Image</th>
               <td>
                 <img
-                  src={employee.imageUrl}
+                  src={`http://localhost:8000/${employee.imageUrl}`}
                   alt={employee.imageUrl}
                   className="img-fluid rounded"
-                  style={{ maxHeight: "200px" }}
+                  style={{ maxHeight: "100px" }}
                 />
               </td>
             </tr>
