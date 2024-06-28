@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
-import "../index.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 const EmployeeDetails = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState([]);
 
-  const fetchEmployee = async (id) => {
+  const fetchSingleEmployee = async (id) => {
     try {
       const response = await axios.get(
         `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
@@ -15,14 +13,15 @@ const EmployeeDetails = () => {
       setEmployee(response.data.employee);
     } catch (err) {
       console.error(err);
+      err.response.data.message
+        ? alert(err.response.data.message)
+        : alert(err.message);
     }
   };
 
   useEffect(() => {
-    fetchEmployee(id);
+    fetchSingleEmployee(id);
   }, []);
-
-  if (!employee) return <div>Loading Employee Details...</div>;
 
   return (
     <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">

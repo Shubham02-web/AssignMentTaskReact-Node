@@ -1,18 +1,20 @@
 const express = require("express");
 const router = express.Router();
-const uploadMiddleware = require("../middelware/UploadFile");
+const upload = require("../middelware/UploadFile");
+// const setEmployeeOfficeId = require("../middelware/employeeOfficeId");
 const {
   createEmployee,
   getEmployees,
+  getSingleEmployee,
   updateEmployee,
   deleteEmployee,
-  getSingleEmployee,
 } = require("../controller/employeeController");
+
 // Routes
-router.post("/create", uploadMiddleware, createEmployee);
+router.post("/create", upload.single("image"), createEmployee);
 router.get("/allemployee", getEmployees);
 router.get("/SingleEmployee/:id", getSingleEmployee);
-router.put("/update/:id", uploadMiddleware, updateEmployee);
+router.put("/update/:id", upload.single("image"), updateEmployee);
 router.delete("/delete/:id", deleteEmployee);
 
 module.exports = router;

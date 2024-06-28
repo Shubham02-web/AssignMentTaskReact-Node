@@ -3,8 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "rsuite";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { EmployeePDF } from "./EmployeePDF";
+import { pdf } from "@react-pdf/renderer";
+import { EmployeePDF } from "./ViewPdfEmployee";
 
 // const { Column, HeaderCell, Cell } = Table;
 
@@ -20,12 +20,33 @@ const EmployeeList = () => {
       setEmployees(response.data.employees);
     } catch (err) {
       console.error(err);
+      err.response.data.message
+        ? alert(err.response.data.message)
+        : alert(err.message);
     }
   };
 
   useEffect(() => {
     fetchEmployees();
   }, []);
+
+  const handleViewPdf = async (employee) => {
+    const blob = await pdf(<EmployeePDF employee={employee} />).toBlob();
+    const blobUrl = URL.createObjectURL(blob);
+    if (blobUrl) {
+      // Open the PDF in a new tab
+      const newTab = window.open(blobUrl, "_blank");
+      if (newTab) {
+        newTab.focus();
+      }
+
+      // Trigger download
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `${employee.name}.pdf`;
+      a.click();
+    }
+  };
 
   return (
     <div className="container-fluid min-vh-100 min-vw-100 bg-primary text-white d-flex flex-column align-items-center justify-content-center">
@@ -64,20 +85,23 @@ const EmployeeList = () => {
                 Update Details
               </Button>
               <Button
-                className="btn btn-danger btn-sm mr-2"
+                className="btn btn-danger btn-sm "
                 onClick={() => navigate(`/employeeDelete/${employee._id}`)}
               >
                 Delete Employee
               </Button>
-              <PDFDownloadLink
-                className="btn btn-sm btn-success"
-                document={<EmployeePDF employee={employee} />}
-                fileName={`${employee.name}.pdf`}
+              <Button
+                className="btn btn-secondary btn-sm "
+                onClick={() => handleViewPdf(employee)}
               >
-                {({ _, url, loading, error }) =>
-                  loading ? "Loading document..." : "Download PDF"
-                }
-              </PDFDownloadLink>
+                View Pdf
+              </Button>
+              {/* <Button
+                onClick={() => handleViewPdf(employee)}
+                className="btn btn-sm btn-success"
+              >
+                View Pdf
+              </Button> */}
             </div>
           </div>
         ))}

@@ -32,11 +32,14 @@ const UpdateEmployee = ({ fetchEmployees }) => {
           email: employee.email,
           phone: employee.phone,
           position: employee.position,
-          imageUrl: setImageName || employee.imageUrl,
+          imageUrl: employee.imageUrl || setImageName,
           employeeOfficeId: employee.employeeOfficeId,
         });
       } catch (err) {
         console.error(err);
+        err.response.data.message
+          ? alert(err.response.data.message)
+          : alert(err.message);
       }
     };
 
@@ -68,6 +71,9 @@ const UpdateEmployee = ({ fetchEmployees }) => {
       navigate("/"); // Redirect to home page or employee list
     } catch (err) {
       console.error(err);
+      err.response.data.message
+        ? alert(err.response.data.message)
+        : alert(err.response.data.message);
     }
   };
 
@@ -181,6 +187,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
                 placeholder="Employee ID"
                 value={formData.employeeOfficeId}
                 onChange={handleChange}
+                readOnly
               />
             </div>
           </div>

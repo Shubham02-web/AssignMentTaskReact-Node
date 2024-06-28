@@ -1,27 +1,34 @@
-const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const generateUniqueUserId = require("./genrateUniqueId");
 
-const router = express.Router();
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const { employeeOfficeId } = req.body;
-    const dir = `./uploads/${employeeOfficeId}`;
-    // Create the directory if it doesn't exist
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+  destination: async (req, file, cb) => {
+    const { name } = req.body;
+
+    if (!name) {
+      return cb(new Error("Name is required"), false);
     }
 
-    cb(null, dir);
+    // Generate unique employee ID
+    const employeeOfficeId = await generateUniqueUserId(name);
+    req.body.employeeOfficeId = employeeOfficeId;
+    console.log(employeeOfficeId);
+
+    // Create directory
+    const uploadPath = path.join(__dirname, `../uploads/${employeeOfficeId}`);
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // Append extension
+    cb(null, file.originalname);
   },
 });
 
 const upload = multer({ storage: storage });
 
-// Middleware function to handle file upload
-const uploadMiddleware = upload.single("image");
-module.exports = uploadMiddleware;
+module.exports = upload;

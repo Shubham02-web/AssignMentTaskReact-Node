@@ -27,8 +27,8 @@ const EmployeeSchema = new Schema(
     },
     employeeOfficeId: {
       type: String,
-      unique: true,
       required: true,
+      unique: true,
     },
   },
   {

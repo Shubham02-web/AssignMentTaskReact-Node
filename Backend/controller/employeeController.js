@@ -2,27 +2,31 @@ const Employee = require("../Models/employee");
 const fs = require("fs");
 const path = require("path");
 const employee = require("../Models/employee");
+const multer = require("multer");
+const generateUniqueUserId = require("../middelware/genrateUniqueId");
 
 // Controllers to handle opertions Creting Employee
-const createEmployee = async function (req, res, next) {
+const createEmployee = async (req, res) => {
   try {
-    // accessing all necessary fields
     const { name, email, phone, position, employeeOfficeId } = req.body;
-    //   Creating Condition to verify fields show error message if any of field is missing
 
-    if (!name || !email || !phone || !position || !employeeOfficeId)
+    if (!name || !email || !phone || !position) {
       return res.status(400).json({
         success: false,
-        message:
-          "Please Enter All Fields name email phone position employeeOfficeId",
+        message: "Please Enter All Fields name email phone and position",
       });
+    }
 
     if (phone.length !== 10) {
       return res.status(400).json({
         success: false,
-        message: `Please enter a valid mobile number of 10 digits that is ${phone.length} digit `,
+        message: `Please enter a valid mobile number of 10 digits that is ${phone.length} digits`,
       });
     }
+
+    // Generate the unique employeeOfficeId
+    // const employeeOfficeId = await generateUniqueUserId(name);
+
     const imageUrl = req.file
       ? `uploads/${employeeOfficeId}/${req.file.originalname}`
       : null;
@@ -35,6 +39,7 @@ const createEmployee = async function (req, res, next) {
       imageUrl,
       employeeOfficeId,
     });
+
     await newEmployee.save();
     res.status(201).json({
       success: true,
@@ -47,7 +52,7 @@ const createEmployee = async function (req, res, next) {
       return res.status(400).json({
         success: false,
         error: "Validation Error",
-        message: `${field} allready exists please enter a unique ${field}`,
+        message: `${field} already exists, please enter a unique ${field}`,
       });
     }
     res.status(500).json({
@@ -56,6 +61,7 @@ const createEmployee = async function (req, res, next) {
     });
   }
 };
+
 // Get all Employess
 const getEmployees = async (req, res) => {
   try {
@@ -74,7 +80,7 @@ const getEmployees = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      error: `Error in get all Employees API ${err.message}`,
+      message: `Error in get all Employees API ${err.message}`,
     });
   }
 };
@@ -95,25 +101,32 @@ const getSingleEmployee = async (req, res) => {
       employee,
     });
   } catch (error) {
-    console.log(`Error in getSingle Employee Details API ${error.message}`);
     res.status(500).json({
       success: false,
       message: `Error  In GetSingleUserDetails API ${error.message}`,
     });
+    console.log(`Error in getSingle Employee Details API ${error.message}`);
   }
 };
 const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, phone, position, employeeOfficeId } = req.body;
+    const { name, email, phone, position } = req.body;
+    if (phone && phone.length !== 10) {
+      return res.status(400).json({
+        success: false,
+        message: `Please enter a valid mobile number of 10 digits that is ${phone.length} digit `,
+      });
+    }
     const updatedEmployee = await Employee.findById(id);
     if (!updatedEmployee)
-      res.json({ message: "no employee find for these id" });
+      res
+        .status(404)
+        .json({ success: false, message: "no employee find for these id" });
     if (name) updatedEmployee.name = name;
     if (email) updatedEmployee.email = email;
     if (phone) updatedEmployee.phone = phone;
     if (position) updatedEmployee.position = position;
-    if (employeeOfficeId) updatedEmployee.employeeOfficeId = employeeOfficeId;
     if (req.file) {
       //  removing image
       const filename = updatedEmployee.imageUrl.split("/").pop();
@@ -123,20 +136,23 @@ const updateEmployee = async (req, res) => {
         "uploads",
         updatedEmployee.employeeOfficeId
       );
-      console.log(dir);
       const filePath = path.join(dir, filename);
       console.log(filePath);
       fs.unlink(filePath, (err) => {
         if (err) {
           if (err.code === "ENOENT") {
             // File does not exist
-            return res.status(404).send("File not found.");
+            return res
+              .status(404)
+              .json({ success: false, message: "File not found." });
           }
           //       // Other errors
-          return res.status(500).send("Error deleting file.");
+          return res
+            .status(500)
+            .json({ success: false, message: "Error deleting file." });
         }
       });
-      updatedEmployee.imageUrl = `uploads/${employeeOfficeId}/${req.file.originalname}`;
+      updatedEmployee.imageUrl = `uploads/${updatedEmployee.employeeOfficeId}/${req.file.originalname}`;
     }
     await updatedEmployee.save();
     res.status(200).json({
@@ -177,23 +193,31 @@ const deleteEmployee = async (req, res) => {
       if (err) {
         if (err.code === "ENOENT") {
           // File does not exist
-          return res.status(404).send("File not found.");
+          return res
+            .status(404)
+            .json({ success: false, message: "File not found." });
         }
         // Other errors
-        return res.status(500).send("Error deleting file.");
+        return res
+          .status(500)
+          .json({ success: false, message: "Error deleting file." });
       }
 
       // Check if the directory is now empty
       fs.readdir(dir, (err, files) => {
         if (err) {
-          return res.status(500).send("Error reading directory.");
+          return res
+            .status(500)
+            .json({ success: false, message: "Error reading directory." });
         }
 
         if (files.length === 0) {
           // Delete the directory if it is empty
           fs.rmdir(dir, (err) => {
             if (err) {
-              return res.status(500).send("Error deleting directory.");
+              return res
+                .status(500)
+                .json({ success: false, message: "Error deleting directory." });
             } // Proceed to the next middleware or route handler
           });
         } else {

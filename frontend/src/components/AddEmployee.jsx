@@ -45,11 +45,10 @@ const EmployeeForm = () => {
       alert(response.data.message);
       navigate("/");
     } catch (err) {
-      if (err.name === "AxiosError") {
-        return alert(err.response.data.message);
-      }
-      alert(err.message);
       console.error(err);
+      err.response.data.message
+        ? alert(err.response.data.message)
+        : alert(err.message);
     }
   };
 
@@ -64,21 +63,6 @@ const EmployeeForm = () => {
           <label className="col-sm-12 text-dark   col-form-label">
             Employee Register Form
           </label>
-        </div>
-        <div className="row m-2 justify-content-center">
-          <label className="col-sm-1 col-form-label m-3 p-0">
-            Employe ID<span className="text-danger">*</span>
-          </label>
-          <div className="col-sm-6 m-3 p-0">
-            <input
-              type="text"
-              name="employeeOfficeId"
-              className="form-control "
-              placeholder="Employee ID"
-              onChange={handleChange}
-              required
-            />
-          </div>
         </div>
         <div className="row m-2  justify-content-center">
           <label className="col-sm-1 col-form-label m-3 p-0">
