@@ -7,3 +7,4 @@ PORT=Your Port No
 and also download node_module using npm i to run these
 
 run script in Backend terminal "npm run dev"
+and create uploads folder for image
