@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { base_url } from "../config";
 // eslint-disable-next-line no-unused-vars
 const UpdateEmployee = ({ fetchEmployees }) => {
   const { id } = useParams();
@@ -21,7 +22,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
     const fetchEmployeeDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
+          `${base_url}/api/v1/employees/SingleEmployee/${id}`
         );
         const employee = response.data.employee;
         console.log(employee);
@@ -63,7 +64,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
     const CheckId = formData.id;
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/v1/employees/update/${CheckId}`,
+        `${base_url}/api/v1/employees/update/${CheckId}`,
         data
       );
       alert(response.data.message);
@@ -183,7 +184,7 @@ const UpdateEmployee = ({ fetchEmployees }) => {
             </label>
             <div className="col-sm-6 m-2 p-0">
               <img
-                src={`http://localhost:8000/${formData.imageUrl}`}
+                src={`${base_url}/${formData.imageUrl}`}
                 alt={formData.imageUrl}
                 className="img-fluid rounded"
                 style={{

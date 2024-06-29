@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "rsuite";
 import { pdf } from "@react-pdf/renderer";
 import { EmployeePDF } from "./ViewPdfEmployee";
-
+import { base_url } from "../config";
 // const { Column, HeaderCell, Cell } = Table;
 
 const EmployeeList = () => {
@@ -15,7 +15,7 @@ const EmployeeList = () => {
   const fetchEmployees = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/v1/employees/allemployee"
+        `${base_url}/api/v1/employees/allemployee`
       );
       setEmployees(response.data.employees);
     } catch (err) {

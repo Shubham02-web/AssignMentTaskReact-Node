@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { base_url } from "../config";
 
 const EmployeeDelete = () => {
   const { id } = useParams();
@@ -10,7 +11,7 @@ const EmployeeDelete = () => {
   const fetchEmployee = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8000/api/v1/employees/delete/${id}`
+        `${base_url}/api/v1/employees/delete/${id}`
       );
       setEmployee(response.data.employee);
       navigate("/");

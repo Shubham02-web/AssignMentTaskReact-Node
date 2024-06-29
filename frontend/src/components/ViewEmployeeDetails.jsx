@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
+import { base_url } from "../config";
 const EmployeeDetails = () => {
   const { id } = useParams();
   const [employee, setEmployee] = useState([]);
@@ -8,7 +9,7 @@ const EmployeeDetails = () => {
   const fetchSingleEmployee = async (id) => {
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/v1/employees/SingleEmployee/${id}`
+        `${base_url}/api/v1/employees/SingleEmployee/${id}`
       );
       setEmployee(response.data.employee);
     } catch (err) {
@@ -65,7 +66,7 @@ const EmployeeDetails = () => {
               <th>Image</th>
               <td>
                 <img
-                  src={`http://localhost:8000/${employee.imageUrl}`}
+                  src={`${base_url}/${employee.imageUrl}`}
                   alt={employee.imageUrl}
                   className="img-fluid rounded"
                   style={{ maxHeight: "100px" }}

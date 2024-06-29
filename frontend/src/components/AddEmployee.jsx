@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import { base_url } from "../config";
 const EmployeeForm = () => {
   const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const EmployeeForm = () => {
     });
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/employees/create",
+        `${base_url}/api/v1/employees/create`,
         data
       );
       // Fetch updated list of employees after successful submission

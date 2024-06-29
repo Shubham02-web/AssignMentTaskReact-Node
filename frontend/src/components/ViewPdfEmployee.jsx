@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import { base_url } from "../config";
 
 const styles = StyleSheet.create({
   page: {
@@ -130,7 +131,7 @@ export const EmployeePDF = ({ employee }) => (
           </View>
           <View style={styles.tableCol}>
             <Image
-              src={`http://localhost:8000/${employee.imageUrl}`}
+              src={`${base_url}/${employee.imageUrl}`}
               alt={employee.imageUrl}
               style={styles.image}
             />

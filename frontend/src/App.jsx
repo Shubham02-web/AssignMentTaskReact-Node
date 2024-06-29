@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 // Lazy load the components
 const EmployeeForm = lazy(() => import("./components/AddEmployee"));
 const EmployeeList = lazy(() => import("./components/AllEmployeesList"));
